@@ -5,7 +5,7 @@ import Card from './Card';
 export default function CurrentWeather() {
   const { data } = useSuspenseQuery({
     queryKey: ['weather'],
-    queryFn: () => getWeather({ lat: 0, lon: 0 }),
+    queryFn: () => getWeather({ lat: -18.9743, lon: -49.4621 }),
   });
 
   return (
@@ -44,9 +44,10 @@ export default function CurrentWeather() {
       </div>
 
       {/* Grid de Detalhes Adicionais */}
-      <div className="grid grid-cols-3 gap-4 border-t border-slate-100 dark:border-slate-800 pt-6">
-        <div className="flex flex-col items-center text-center">
-          <span className="text-[10px] uppercase font-bold text-slate-400 mb-1">
+      <div className="grid grid-cols-2 border-t border-slate-100 dark:border-slate-800 mt-6">
+        {/* Sensação - Row 1, Col 1 */}
+        <div className="flex flex-col items-center text-center py-6 border-b border-slate-100 dark:border-slate-800">
+          <span className="text-[10px] uppercase font-bold text-slate-400 mb-1 tracking-tight">
             Sensação
           </span>
           <p className="text-lg font-bold text-slate-700 dark:text-slate-200">
@@ -54,8 +55,9 @@ export default function CurrentWeather() {
           </p>
         </div>
 
-        <div className="flex flex-col items-center text-center border-x border-slate-100 dark:border-slate-800">
-          <span className="text-[10px] uppercase font-bold text-slate-400 mb-1">
+        {/* Umidade - Row 1, Col 2 */}
+        <div className="flex flex-col items-center text-center py-6 border-l border-b border-slate-100 dark:border-slate-800">
+          <span className="text-[10px] uppercase font-bold text-slate-400 mb-1 tracking-tight">
             Umidade
           </span>
           <p className="text-lg font-bold text-blue-500">
@@ -63,13 +65,24 @@ export default function CurrentWeather() {
           </p>
         </div>
 
-        <div className="flex flex-col items-center text-center">
-          <span className="text-[10px] uppercase font-bold text-slate-400 mb-1">
+        {/* Vento - Row 2, Col 1 */}
+        <div className="flex flex-col items-center text-center py-6">
+          <span className="text-[10px] uppercase font-bold text-slate-400 mb-1 tracking-tight">
             Vento
           </span>
           <p className="text-lg font-bold text-slate-700 dark:text-slate-200">
-            {Math.round(data?.current.wind_speed)}{' '}
-            <small className="text-[10px]">m/s</small>
+            {Math.round(data?.current.wind_speed * 3.6)}{' '}
+            <small className="text-[10px] font-normal">km/h</small>
+          </p>
+        </div>
+
+        {/* Chuva - Row 2, Col 2 */}
+        <div className="flex flex-col items-center text-center py-6 border-l border-slate-100 dark:border-slate-800">
+          <span className="text-[10px] uppercase font-bold text-slate-400 mb-1 tracking-tight">
+            Chuva
+          </span>
+          <p className="text-lg font-bold text-cyan-600 dark:text-cyan-400">
+            {Math.round((data?.hourly[0].pop || 0) * 100)}%
           </p>
         </div>
       </div>

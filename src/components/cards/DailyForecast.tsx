@@ -5,7 +5,7 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 export default function DailyForecast() {
   const { data } = useSuspenseQuery({
     queryKey: ['weather'],
-    queryFn: () => getWeather({ lat: 0, lon: 0 }),
+    queryFn: () => getWeather({ lat: -18.9743, lon: -49.4621 }),
   });
 
   return (

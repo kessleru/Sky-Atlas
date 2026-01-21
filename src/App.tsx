@@ -3,11 +3,12 @@ import { getWeather } from './api';
 import DailyForecast from './components/cards/DailyForecast';
 import HourlyForecast from './components/cards/HourlyForecast';
 import CurrentWeather from './components/cards/CurrentWeather';
+import AdditionalInfo from './components/cards/AdditionalInfo';
 
 function App() {
   const { data } = useQuery({
     queryKey: ['weather'],
-    queryFn: () => getWeather({ lat: 0, lon: 0 }),
+    queryFn: () => getWeather({ lat: -18.9743, lon: -49.4621 }),
   });
 
   return (
@@ -15,6 +16,7 @@ function App() {
       <CurrentWeather />
       <HourlyForecast />
       <DailyForecast />
+      <AdditionalInfo />
     </div>
   );
 }

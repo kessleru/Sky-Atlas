@@ -1,10 +1,14 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 const WeatherSchema = z.object({
   id: z.number(),
   main: z.string(),
   description: z.string(),
   icon: z.string(),
+});
+
+const RainSchema = z.object({
+  '1h': z.number().optional(),
 });
 
 const CurrentSchema = z.object({
@@ -23,6 +27,7 @@ const CurrentSchema = z.object({
   wind_deg: z.number(),
   wind_gust: z.number().optional(),
   weather: z.array(WeatherSchema),
+  rain: RainSchema.optional(),
 });
 
 const HourlySchema = z.object({

@@ -6,7 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 export default function HourlyForecast() {
   const { data } = useQuery({
     queryKey: ['weather'],
-    queryFn: () => getWeather({ lat: 0, lon: 0 }),
+    queryFn: () => getWeather({ lat: -18.9743, lon: -49.4621 }),
   });
 
   const containerRef = useRef<HTMLDivElement>(null);
