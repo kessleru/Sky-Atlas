@@ -17,7 +17,7 @@
 
 @layer base {
   ::-webkit-scrollbar {
-    width: 8px;
+    width: 10px;
   }
   ::-webkit-scrollbar-track {
     background: #18181b; 

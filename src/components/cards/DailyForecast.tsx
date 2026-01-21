@@ -9,41 +9,68 @@ export default function DailyForecast() {
   });
 
   return (
-    <div>
-      <Card title="Previsão diária" childrenClassName="flex flex-col gap-4">
-        <div className="grid grid-cols-5 p-2 rounded-xl bg-zinc-800 text-center items-center font-medium">
-          <p className="text-left pl-4">Dia</p>
-          <p>Condição</p>
-          <p>Média</p>
-          <p>Máx</p>
-          <p>Min</p>
+    <Card title="Previsão diária" childrenClassName="p-0">
+      <div className="p-4">
+        {/* Header da Tabela (Discreto e Semântico) */}
+        <div className="grid grid-cols-5 mb-2 px-2 text-xs uppercase tracking-wider font-bold text-slate-400">
+          <p className="text-left pl-2">Dia</p>
+          <p className="text-center">Clima</p>
+          <p className="text-center">Méd</p>
+          <p className="text-center">Máx</p>
+          <p className="text-center">Min</p>
         </div>
 
-        {data?.daily.map((day, index) => (
-          <div
-            key={index}
-            className="grid grid-cols-5 mx-2 items-center text-center"
-          >
-            <p className="text-left pl-4 capitalize">
-              {new Date(day.dt * 1000).toLocaleDateString(undefined, {
-                weekday: 'short',
-              })}
-            </p>
+        <div className="flex flex-col">
+          {data?.daily.map((day, index) => (
+            <div
+              key={index}
+              className={`
+              group grid grid-cols-5 items-center py-3 px-2 rounded-lg transition-all duration-200 border-b border-slate-100 last:border-0
+              
+              /* Estados Padrão */
+              text-slate-600 dark:text-slate-300 dark:border-slate-800
+              
+              /* Estados de Hover (Alto Contraste) */
+              hover:bg-slate-200 hover:text-slate-900 
+              dark:hover:bg-slate-700 dark:hover:text-slate-100
+            `}
+            >
+              {/* Dia da Semana */}
+              <p className="text-left pl-2 font-semibold capitalize">
+                {index === 0
+                  ? 'Hoje'
+                  : new Date(day.dt * 1000).toLocaleDateString(undefined, {
+                      weekday: 'short',
+                    })}
+              </p>
 
-            <div className="flex justify-center">
-              <img
-                className="size-10"
-                src={`https://openweathermap.org/img/wn/${day.weather[0].icon}.png`}
-                alt="weather icon"
-              />
+              {/* Ícone */}
+              <div className="flex justify-center">
+                <img
+                  className="size-10 drop-shadow-sm transition-transform"
+                  src={`https://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png`}
+                  alt="weather icon"
+                />
+              </div>
+
+              {/* Temperatura Média */}
+              <p className="text-center font-medium">
+                {Math.round(day.temp.day)}°
+              </p>
+
+              {/* Máxima (Destaque visual sutil) */}
+              <p className="text-center font-bold text-slate-800 dark:text-slate-500">
+                {Math.round(day.temp.max)}°
+              </p>
+
+              {/* Mínima (Visual mais leve) */}
+              <p className="text-center font-medium text-slate-400 dark:text-slate-500">
+                {Math.round(day.temp.min)}°
+              </p>
             </div>
-
-            <p>{Math.round(day.temp.day)}°C</p>
-            <p className="text-gray-500/75">{Math.round(day.temp.max)}°C</p>
-            <p className="text-gray-500/75">{Math.round(day.temp.min)}°C</p>
-          </div>
-        ))}
-      </Card>
-    </div>
+          ))}
+        </div>
+      </div>
+    </Card>
   );
 }
