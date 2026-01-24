@@ -10,6 +10,7 @@ import Pressure from '../../assets/icons/pressure.svg?react';
 import Visibility from '../../assets/icons/visibility.svg?react';
 import DewPoint from '../../assets/icons/dew.svg?react';
 import Clouds from '../../assets/icons/clouds.svg?react';
+import type { Coords } from '../../types';
 
 interface WeatherRow {
   label: string;
@@ -30,10 +31,14 @@ const rows: WeatherRow[] = [
   { label: 'Nebulosidade', value: 'clouds', Icon: Clouds },
 ] as const;
 
-export default function AdditionalInfo() {
+type props = {
+  coords: Coords
+};
+
+export default function AdditionalInfo({ coords }: props) {
   const { data } = useSuspenseQuery({
-    queryKey: ['weather'],
-    queryFn: () => getWeather({ lat: -18.9743, lon: -49.4621 }),
+    queryKey: ['weather', coords],
+    queryFn: () => getWeather({ lat: coords.lat, lon: coords.lon }),
   });
 
   const current = data?.current;

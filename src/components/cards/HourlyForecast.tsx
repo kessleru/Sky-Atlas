@@ -1,12 +1,18 @@
 import React, { useRef, useState } from 'react';
 import Card from './Card';
 import { getWeather } from '../../api';
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
+import type { Coords } from '../../types';
 
-export default function HourlyForecast() {
-  const { data } = useQuery({
-    queryKey: ['weather'],
-    queryFn: () => getWeather({ lat: -18.9743, lon: -49.4621 }),
+
+type props = {
+  coords: Coords
+};
+
+export default function HourlyForecast({ coords }: props) {
+  const { data } = useSuspenseQuery({
+    queryKey: ['weather', coords],
+    queryFn: () => getWeather({ lat: coords.lat, lon: coords.lon }),
   });
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -66,7 +72,7 @@ export default function HourlyForecast() {
                    
                    /* HOVER STATES - Foco em contraste */
                    hover:bg-slate-200 hover:border-slate-300 hover:text-slate-900
-                   dark:hover:bg-slate-700 dark:hover:border-slate-600 dark:hover:text-slate-100
+                   dark:hover:bg-slate-800 dark:hover:border-slate-700 dark:hover:text-slate-100
                     hover:shadow-md
                   `
               }

@@ -1,11 +1,16 @@
 import Card from './Card';
 import { getWeather } from '../../api';
 import { useSuspenseQuery } from '@tanstack/react-query';
+import type { Coords } from '../../types';
 
-export default function DailyForecast() {
+type props = {
+  coords: Coords
+};
+
+export default function DailyForecast({ coords }: props) {
   const { data } = useSuspenseQuery({
-    queryKey: ['weather'],
-    queryFn: () => getWeather({ lat: -18.9743, lon: -49.4621 }),
+    queryKey: ['weather', coords],
+    queryFn: () => getWeather({ lat: coords.lat, lon: coords.lon }),
   });
 
   return (
@@ -32,7 +37,7 @@ export default function DailyForecast() {
               
               /* Estados de Hover (Alto Contraste) */
               hover:bg-slate-200 hover:text-slate-900 
-              dark:hover:bg-slate-700 dark:hover:text-slate-100
+              dark:hover:bg-slate-800/40 dark:hover:text-slate-100
             `}
             >
               {/* Dia da Semana */}
