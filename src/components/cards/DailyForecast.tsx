@@ -30,13 +30,13 @@ export default function DailyForecast({ coords }: props) {
             <div
               key={index}
               className={`
-              group grid grid-cols-5 items-center py-3 px-2 rounded-lg transition-all duration-200 border-b border-slate-100 last:border-0
+              group grid grid-cols-5 items-center py-3 px-2 transition-all duration-0 border-b border-slate-100 last:border-0
               
               /* Estados Padrão */
               text-slate-600 dark:text-slate-300 dark:border-slate-800
               
               /* Estados de Hover (Alto Contraste) */
-              hover:bg-slate-200 hover:text-slate-900 
+              hover:bg-slate-200 hover:rounded-lg hover:text-slate-900 
               dark:hover:bg-slate-800/40 dark:hover:text-slate-100
             `}
             >

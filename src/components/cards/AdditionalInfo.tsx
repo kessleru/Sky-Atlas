@@ -52,7 +52,7 @@ export default function AdditionalInfo({ coords }: props) {
           return (
             <div 
               key={value}
-              className="flex justify-between items-center py-3 border-b border-slate-100 dark:border-slate-800 last:border-0 hover:bg-slate-50/50 dark:hover:bg-slate-800/40 px-2 rounded-lg transition-colors"
+              className="flex justify-between items-center py-3 border-b border-slate-100 dark:border-slate-800 last:border-0 hover:bg-slate-50/50 dark:hover:bg-slate-800/40 px-2 hover:rounded-lg transition-all duration-0"
             >
               <span className="text-sm font-medium text-slate-500 dark:text-slate-400">
                 {label}

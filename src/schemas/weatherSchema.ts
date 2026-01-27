@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import z from 'zod';
 
 const WeatherSchema = z.object({
   id: z.number(),
