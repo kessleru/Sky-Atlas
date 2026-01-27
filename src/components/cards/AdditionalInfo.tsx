@@ -7,7 +7,6 @@ import Rain from '../../assets/icons/rain.svg?react';
 import Uv from '../../assets/icons/uv-index.svg?react';
 import Wind from '../../assets/icons/wind.svg?react';
 import Pressure from '../../assets/icons/pressure.svg?react';
-import Visibility from '../../assets/icons/visibility.svg?react';
 import DewPoint from '../../assets/icons/dew.svg?react';
 import Clouds from '../../assets/icons/clouds.svg?react';
 import type { Coords } from '../../types';
@@ -26,7 +25,6 @@ const rows: WeatherRow[] = [
   { label: 'Índice UV', value: 'uvi', Icon: Uv },
   { label: 'Direção do vento', value: 'wind_deg', Icon: Wind, shouldRotate: true },
   { label: 'Pressão atmosférica', value: 'pressure', Icon: Pressure },
-  { label: 'Visibilidade', value: 'visibility', Icon: Visibility },
   { label: 'Ponto de orvalho', value: 'dew_point', Icon: DewPoint },
   { label: 'Nebulosidade', value: 'clouds', Icon: Clouds },
 ] as const;
@@ -97,8 +95,6 @@ function FormatValue({ value, data }: { value: string; data: any }) {
       return `${val}°`;
     case 'pressure':
       return `${val} hPa`;
-    case 'visibility':
-      return val >= 1000 ? `${(val / 1000).toFixed(1)} km` : `${val} m`;
     case 'dew_point':
       return `${Math.round(val)}°C`;
     case 'clouds':

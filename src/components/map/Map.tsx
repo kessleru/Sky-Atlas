@@ -3,7 +3,7 @@ import { Marker } from 'react-leaflet/Marker';
 import { TileLayer } from 'react-leaflet/TileLayer';
 import 'leaflet/dist/leaflet.css';
 import { useMap } from 'react-leaflet/hooks';
-import type { Coords } from '../types';
+import type { Coords } from '../../types';
 
 const API_KEY = import.meta.env.VITE_API_KEY;
 
