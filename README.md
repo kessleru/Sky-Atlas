@@ -15,7 +15,7 @@ Sky Atlas é um dashboard de clima moderno e interativo, construído para fornec
 
 ## 🌐 Demo
 
-🔗 **Live:** [Acessar aplicação](sky-atlas-eight.vercel.app)
+🔗 **Live:** [Acessar aplicação](https://sky-atlas-eight.vercel.app/)
 
 ## ✨ Funcionalidades
 
