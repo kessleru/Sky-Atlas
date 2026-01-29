@@ -1,8 +1,8 @@
-# Sky Atlas 🌤️
+<div align="center">
+  <img src="./src/assets/demo/Sky-Atlas.svg" alt="Sky Atlas" />
+</div>
 
 Sky Atlas é um dashboard de clima moderno e interativo, construído para fornecer informações detalhadas sobre as condições meteorológicas e a qualidade do ar em qualquer lugar do mundo.
-
-![Sky Atlas Preview](/public/vite.svg)
 
 ## ✨ Funcionalidades
 
