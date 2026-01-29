@@ -84,10 +84,16 @@ function AirPollution({ coords }: { coords: Coords }) {
               <Information className="size-5 text-muted-foreground" />
             </TooltipTrigger>
             <TooltipContent className="z-2000">
-              <p className="max-w-xs">
-                Índice de Qualidade do Ar. Valores possíveis: 1, 2, 3, 4, 5. Onde 1 = Bom,
-                2 = Razoável, 3 = Moderado, 4 = Ruim, 5 = Muito Ruim.
-              </p>
+              <div className="flex flex-col gap-2 p-1">
+                <p className="font-semibold mb-1">Índice de Qualidade do Ar</p>
+                <ul className="space-y-1 text-sm">
+                  <li className="flex items-center gap-2"><span className="font-bold text-green-500">1</span> = Bom</li>
+                  <li className="flex items-center gap-2"><span className="font-bold text-yellow-500">2</span> = Razoável</li>
+                  <li className="flex items-center gap-2"><span className="font-bold text-orange-500">3</span> = Moderado</li>
+                  <li className="flex items-center gap-2"><span className="font-bold text-red-500">4</span> = Ruim</li>
+                  <li className="flex items-center gap-2"><span className="font-bold text-purple-500">5</span> = Muito Ruim</li>
+                </ul>
+              </div>
             </TooltipContent>
           </Tooltip>
         </div>

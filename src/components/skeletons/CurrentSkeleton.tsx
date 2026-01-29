@@ -11,15 +11,15 @@ export default function CurrentSkeleton() {
         </div>
         <div className="flex flex-col items-center gap-2">
           {/* Simula a Temperatura Grande */}
-          <Skeleton className="h-16 w-32" /> 
+          <Skeleton className="h-16 w-32" />
           {/* Simula a Descrição */}
           <Skeleton className="h-5 w-24" />
         </div>
       </div>
 
       {/* Horário Local com Badge (Skeleton) */}
-      <div className="flex flex-col items-center bg-slate-50 dark:bg-slate-800/50 rounded-2xl py-3 px-6 mb-8 border border-slate-100 dark:border-slate-700">
-        <p className="text-xs uppercase tracking-widest text-slate-400 font-bold mb-2">
+      <div className="flex flex-col items-center bg-muted/50 rounded-2xl py-3 px-6 mb-8 border border-border">
+        <p className="text-xs uppercase tracking-widest text-muted-foreground font-bold mb-2">
           Horário Local
         </p>
         <Skeleton className="h-7 w-28" />
