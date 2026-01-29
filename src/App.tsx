@@ -13,6 +13,7 @@ import CurrentSkeleton from './components/skeletons/CurrentSkeleton';
 import HourlyForecastSkeleton from './components/skeletons/HourlySkeleton';
 import AdditionalInfoSkeleton from './components/skeletons/AdditionalSkeleton';
 import DailyForecastSkeleton from './components/skeletons/DailySkeleton';
+import SidePanel from './components/side-panel/SidePanel';
 
 function App() {
   const [coordinates, setCoords] = useState<Coords>({
@@ -38,25 +39,28 @@ function App() {
       : { lat: geocodeData?.[0].lat ?? 0, lon: geocodeData?.[0].lon ?? 0 };
 
   return (
-    <div className="flex flex-col gap-8">
-      <div className="flex gap-8">
-        <LocationDropdown location={location} setLocation={setLocation} />
-        <MapTypeDropdown mapType={mapType} setMapType={setMapType} />
+    <>
+      <div className="flex flex-col gap-8">
+        <div className="flex gap-8">
+          <LocationDropdown location={location} setLocation={setLocation} />
+          <MapTypeDropdown mapType={mapType} setMapType={setMapType} />
+        </div>
+        <Map coords={coords} onMapClick={onMapClick} mapType={mapType} />
+        <Suspense fallback={<CurrentSkeleton />}>
+          <CurrentWeather coords={coords} />
+        </Suspense>
+        <Suspense fallback={<HourlyForecastSkeleton />}>
+          <HourlyForecast coords={coords} />
+        </Suspense>
+        <Suspense fallback={<DailyForecastSkeleton />}>
+          <DailyForecast coords={coords} />
+        </Suspense>
+        <Suspense fallback={<AdditionalInfoSkeleton />}>
+          <AdditionalInfo coords={coords} />
+        </Suspense>
       </div>
-      <Map coords={coords} onMapClick={onMapClick} mapType={mapType} />
-      <Suspense fallback={<CurrentSkeleton />}>
-        <CurrentWeather coords={coords} />
-      </Suspense>
-      <Suspense fallback={<HourlyForecastSkeleton />}>
-        <HourlyForecast coords={coords} />
-      </Suspense>
-      <Suspense fallback={<DailyForecastSkeleton />}>
-        <DailyForecast coords={coords} />
-      </Suspense>
-      <Suspense fallback={<AdditionalInfoSkeleton />}>
-        <AdditionalInfo coords={coords} />
-      </Suspense>
-    </div>
+      <SidePanel coords={coords}/>
+    </>
   );
 }
 
