@@ -1,5 +1,7 @@
 <div align="center">
   <img src="./src/assets/demo/Sky-Atlas.svg" alt="Sky Atlas" />
+  <br />
+  <br />
 </div>
 
 ![React](https://img.shields.io/badge/React-19.0.0--rc.1-61DAFB?style=flat-square&logo=react)
@@ -149,7 +151,9 @@ VITE_API_KEY=sua_chave_api_aqui
 ---
 
 <div align="center">
-    
-[![GitHub](https://img.shields.io/badge/GitHub-kessleru-181717?logo=github)](https://github.com/kessleru)
+
+  Desenvolvido por **Kessleru**
+
+  [![GitHub](https://img.shields.io/badge/GitHub-kessleru-181717?style=flat-square&logo=github)](https://github.com/kessleru)
 
 </div>
