@@ -5,7 +5,8 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
+  --sidebar-width: 320px;
+  --background: oklch(0.957 0.001 286.375);
   --foreground: oklch(0.141 0.005 285.823);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.141 0.005 285.823);
@@ -43,9 +44,11 @@
   ::-webkit-scrollbar {
     width: 10px;
   }
+
   ::-webkit-scrollbar-track {
-    background: #18181b; 
+    background: #18181b;
   }
+
   ::-webkit-scrollbar-thumb {
     background: #27272a;
     border-radius: 10px;
@@ -133,6 +136,7 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }

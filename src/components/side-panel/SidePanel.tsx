@@ -1,148 +1,201 @@
 import { getAirPollution } from "@/api"
 import type { Coords } from "@/types"
 import { useSuspenseQuery } from "@tanstack/react-query"
-import { Suspense, type Dispatch, type SetStateAction } from "react"
-import Card from "../cards/Card"
-import { Slider } from "../ui/slider"
+import { Suspense, useState } from "react"
 import clsx from "clsx"
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip"
 import Information from "/src/assets/icons/information.svg?react"
 import Chevron from "/src/assets/icons/chevron-left.svg?react"
+import SidePanelSkeleton from "../skeletons/SidePanelSkeleton"
 
 type Props = {
   coords: Coords
-  isSidePanelOpen: boolean
-  setIsSidePanelOpen: Dispatch<SetStateAction<boolean>>
 }
 
-export default function SidePanel(props: Props) {
-  const { isSidePanelOpen, setIsSidePanelOpen } = props
+export default function SidePanel({ coords }: Props) {
+  const [isSidePanelOpen, setIsSidePanelOpen] = useState(false)
+
   return (
-    <div
-      className={clsx(
-        "fixed top-0 right-0 h-screen w-(--sidebar-width) shadow-md bg-sidebar z-1001 py-8 px-4 overflow-y-scroll transition-transform duration-300 lg:translate-x-0!",
-        isSidePanelOpen ? "translate-x-0" : "translate-x-full"
-      )}
-    >
-      <button onClick={() => setIsSidePanelOpen(false)}>
-        <Chevron className="size-8 -ml-2 lg:hidden" />
+    <>
+      {/* Botão flutuante para abrir o painel */}
+      <button
+        onClick={() => setIsSidePanelOpen(true)}
+        className={clsx(
+          "fixed bottom-6 right-6 z-1000 p-4 rounded-full bg-linear-to-br from-card to-card/60 shadow-lg hover:scale-105 transition-all duration-300 lg:hidden",
+          isSidePanelOpen && "opacity-0 pointer-events-none"
+        )}
+        aria-label="Abrir painel de qualidade do ar"
+      >
+        <Information className="size-6" />
       </button>
-      <Suspense>
-        <AirPollution {...props} />
-      </Suspense>
-    </div>
+
+      {/* Overlay para fechar o painel ao clicar fora */}
+      {isSidePanelOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-1000 lg:hidden"
+          onClick={() => setIsSidePanelOpen(false)}
+        />
+      )}
+
+      {/* Painel lateral */}
+      <div
+        className={clsx(
+          "fixed top-0 right-0 h-screen w-(--sidebar-width) shadow-xl bg-linear-to-b from-sidebar to-sidebar/95 z-1001 py-6 px-4 overflow-y-auto overflow-x-hidden transition-transform duration-300 lg:translate-x-0 border-l border-border",
+          isSidePanelOpen ? "translate-x-0" : "translate-x-full"
+        )}
+      >
+        {/* Header com botão de fechar */}
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-2xl font-bold">Qualidade do Ar</h1>
+          <button
+            onClick={() => setIsSidePanelOpen(false)}
+            className="p-2 rounded-lg hover:bg-card/50 transition-colors lg:hidden"
+            aria-label="Fechar painel"
+          >
+            <Chevron className="size-6 rotate-180" />
+          </button>
+        </div>
+
+        <Suspense fallback={<SidePanelSkeleton />}>
+          <AirPollution coords={coords} />
+        </Suspense>
+      </div>
+    </>
   )
 }
 
-function AirPollution({ coords }: Props) {
+function AirPollution({ coords }: { coords: Coords }) {
   const { data } = useSuspenseQuery({
     queryKey: ["pollution", coords],
     queryFn: () => getAirPollution(coords),
   })
 
   return (
-    <div className="flex flex-col gap-4">
-      <h1 className="text-2xl font-semibold">Air Pollution</h1>
-      <h1 className="text-5xl font-semibold">{data.list[0].main.aqi}</h1>
-      <div className="flex items-center gap-2">
-        <h1 className="text-2xl font-semibold">AQI</h1>
-        <Tooltip>
-          <TooltipTrigger>
-            <Information className="size-5" />
-          </TooltipTrigger>
-          <TooltipContent className="z-2000">
-            <p className="max-w-xs">
-              {" "}
-              Air Quality Index. Possible values: 1, 2, 3, 4, 5. Where 1 = Good,
-              2 = Fair, 3 = Moderate, 4 = Poor, 5 = Very Poor.
-            </p>
-          </TooltipContent>
-        </Tooltip>
+    <div className="flex flex-col">
+      {/* Header: IQA Principal */}
+      <div className="flex items-center gap-3 mb-6">
+        <h2 className="text-6xl font-bold tracking-tighter text-foreground">
+          {data.list[0].main.aqi}
+        </h2>
+        <div className="flex flex-col">
+          <span className="text-lg font-semibold text-muted-foreground">IQA</span>
+          <Tooltip>
+            <TooltipTrigger>
+              <Information className="size-5 text-muted-foreground" />
+            </TooltipTrigger>
+            <TooltipContent className="z-2000">
+              <p className="max-w-xs">
+                Índice de Qualidade do Ar. Valores possíveis: 1, 2, 3, 4, 5. Onde 1 = Bom,
+                2 = Razoável, 3 = Moderado, 4 = Ruim, 5 = Muito Ruim.
+              </p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
       </div>
-      {Object.entries(data.list[0].components).map(([key, value]) => {
-        const pollutant =
-          airQualityRanges[key.toUpperCase() as keyof typeof airQualityRanges]
 
-        const max = Math.max(pollutant["Very Poor"].min, value)
+      {/* Lista de Poluentes */}
+      <div className="flex flex-col">
+        {Object.entries(data.list[0].components).map(([key, value]) => {
+          const pollutant =
+            airQualityRanges[key.toUpperCase() as keyof typeof airQualityRanges]
 
-        const currentLevel = (() => {
-          for (const [level, range] of Object.entries(pollutant)) {
-            if (
-              value >= range.min &&
-              (range.max === null || value <= range.max)
-            )
-              return level
-          }
-          return "Very Poor"
-        })()
+          const max = Math.max(pollutant["Muito Ruim"].min, value)
 
-        const qualityColor = (() => {
-          switch (currentLevel) {
-            case "Good":
-              return "bg-green-500"
-            case "Fair":
-              return "bg-yellow-500"
-            case "Moderate":
-              return "bg-orange-500"
-            case "Poor":
-              return "bg-red-500"
-            case "Very Poor":
-              return "bg-purple-500"
-            default:
-              return "bg-zinc-500"
-          }
-        })()
+          const currentLevel = (() => {
+            for (const [level, range] of Object.entries(pollutant)) {
+              if (
+                value >= range.min &&
+                (range.max === null || value <= range.max)
+              )
+                return level
+            }
+            return "Muito Ruim"
+          })()
 
-        return (
-          <Card
-            key={key}
-            childrenClassName="flex flex-col gap-3"
-            className="from-sidebar-accent to-sidebar-accent/60 gap-0!"
-          >
-            <div className="flex justify-between">
-              <div className="flex items-center gap-2">
-                <span className="text-lg font-bold capitalize">{key}</span>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <Information className="size-5" />
-                  </TooltipTrigger>
-                  <TooltipContent className="z-2000">
-                    <p className="max-w-xs">
-                      Concentration of{" "}
-                      {pollutantNameMapping[key.toUpperCase() as Pollutant]}
-                    </p>
-                  </TooltipContent>
-                </Tooltip>
+          const qualityColor = (() => {
+            switch (currentLevel) {
+              case "Bom":
+                return "bg-green-500"
+              case "Razoável":
+                return "bg-yellow-500"
+              case "Moderado":
+                return "bg-orange-500"
+              case "Ruim":
+                return "bg-red-500"
+              case "Muito Ruim":
+                return "bg-purple-500"
+              default:
+                return "bg-zinc-500"
+            }
+          })()
+
+          return (
+            <div
+              key={key}
+              className="flex flex-col gap-3 py-5 border-b border-border last:border-0 hover:bg-muted/50 px-3 hover:rounded-lg transition-all"
+            >
+              {/* Header do poluente */}
+              <div className="flex justify-between items-center">
+                <div className="flex items-center gap-2">
+                  <span className="text-base font-semibold text-muted-foreground uppercase">
+                    {key}
+                  </span>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <Information className="size-5 text-muted-foreground/60" />
+                    </TooltipTrigger>
+                    <TooltipContent className="z-2000">
+                      <p className="max-w-xs">
+                        Concentração de{" "}
+                        {pollutantNameMapping[key.toUpperCase() as Pollutant]}
+                      </p>
+                    </TooltipContent>
+                  </Tooltip>
+                </div>
+                <div className="text-right">
+                  <span className="text-lg font-semibold text-foreground block">
+                    {value}
+                  </span>
+                  <span className={clsx("text-xs font-medium", qualityColor.replace('bg-', 'text-'))}>
+                    {currentLevel}
+                  </span>
+                </div>
               </div>
-              <span className="text-lg font-semibold">{value}</span>
+
+              {/* Slider / Barra de Progresso */}
+              <div className="relative h-2 w-full rounded-full bg-muted overflow-hidden flex">
+                {Object.keys(pollutant).map((quality) => {
+                  const qColor = (() => {
+                    switch (quality) {
+                      case "Bom": return "bg-green-500";
+                      case "Razoável": return "bg-yellow-500";
+                      case "Moderado": return "bg-orange-500";
+                      case "Ruim": return "bg-red-500";
+                      case "Muito Ruim": return "bg-purple-500";
+                      default: return "bg-zinc-500";
+                    }
+                  })();
+
+                  return (
+                    <div key={quality} className={clsx("h-full flex-1", qColor, quality === currentLevel ? "opacity-100" : "opacity-30")} />
+                  )
+                })}
+                {/* Indicador de posição (opcional, pode ser simplificado só com a cor ativa acima) */}
+              </div>
+
+              <div className="flex justify-between text-sm text-muted-foreground">
+                <p>0</p>
+                <p>{max}</p>
+              </div>
             </div>
-            <Slider min={0} max={max} value={[value]} disabled />
-            <div className="flex justify-between text-xs">
-              <p>0</p>
-              <p>{max}</p>
-            </div>
-            <div className="flex justify-between">
-              {Object.keys(pollutant).map((quality) => (
-                <span
-                  className={clsx(
-                    "px-2 py-1 rounded-md text-xs font-medium",
-                    quality === currentLevel
-                      ? qualityColor
-                      : "bg-muted text-muted-foreground"
-                  )}
-                >
-                  {quality}
-                </span>
-              ))}
-            </div>
-          </Card>
-        )
-      })}
+          )
+        })}
+      </div>
     </div>
   )
 }
 
-type AirQualityLevel = "Good" | "Fair" | "Moderate" | "Poor" | "Very Poor"
+type AirQualityLevel = "Bom" | "Razoável" | "Moderado" | "Ruim" | "Muito Ruim"
 
 interface Range {
   min: number
@@ -155,70 +208,70 @@ type AirQualityRanges = Record<Pollutant, Record<AirQualityLevel, Range>>
 
 const airQualityRanges: AirQualityRanges = {
   SO2: {
-    Good: { min: 0, max: 20 },
-    Fair: { min: 20, max: 80 },
-    Moderate: { min: 80, max: 250 },
-    Poor: { min: 250, max: 350 },
-    "Very Poor": { min: 350, max: null },
+    Bom: { min: 0, max: 20 },
+    Razoável: { min: 20, max: 80 },
+    Moderado: { min: 80, max: 250 },
+    Ruim: { min: 250, max: 350 },
+    "Muito Ruim": { min: 350, max: null },
   },
   NO2: {
-    Good: { min: 0, max: 40 },
-    Fair: { min: 40, max: 70 },
-    Moderate: { min: 70, max: 150 },
-    Poor: { min: 150, max: 200 },
-    "Very Poor": { min: 200, max: null },
+    Bom: { min: 0, max: 40 },
+    Razoável: { min: 40, max: 70 },
+    Moderado: { min: 70, max: 150 },
+    Ruim: { min: 150, max: 200 },
+    "Muito Ruim": { min: 200, max: null },
   },
   PM10: {
-    Good: { min: 0, max: 20 },
-    Fair: { min: 20, max: 50 },
-    Moderate: { min: 50, max: 100 },
-    Poor: { min: 100, max: 200 },
-    "Very Poor": { min: 200, max: null },
+    Bom: { min: 0, max: 20 },
+    Razoável: { min: 20, max: 50 },
+    Moderado: { min: 50, max: 100 },
+    Ruim: { min: 100, max: 200 },
+    "Muito Ruim": { min: 200, max: null },
   },
   PM2_5: {
-    Good: { min: 0, max: 10 },
-    Fair: { min: 10, max: 25 },
-    Moderate: { min: 25, max: 50 },
-    Poor: { min: 50, max: 75 },
-    "Very Poor": { min: 75, max: null },
+    Bom: { min: 0, max: 10 },
+    Razoável: { min: 10, max: 25 },
+    Moderado: { min: 25, max: 50 },
+    Ruim: { min: 50, max: 75 },
+    "Muito Ruim": { min: 75, max: null },
   },
   O3: {
-    Good: { min: 0, max: 60 },
-    Fair: { min: 60, max: 100 },
-    Moderate: { min: 100, max: 140 },
-    Poor: { min: 140, max: 180 },
-    "Very Poor": { min: 180, max: null },
+    Bom: { min: 0, max: 60 },
+    Razoável: { min: 60, max: 100 },
+    Moderado: { min: 100, max: 140 },
+    Ruim: { min: 140, max: 180 },
+    "Muito Ruim": { min: 180, max: null },
   },
   CO: {
-    Good: { min: 0, max: 4400 },
-    Fair: { min: 4400, max: 9400 },
-    Moderate: { min: 9400, max: 12400 },
-    Poor: { min: 12400, max: 15400 },
-    "Very Poor": { min: 15400, max: null },
+    Bom: { min: 0, max: 4400 },
+    Razoável: { min: 4400, max: 9400 },
+    Moderado: { min: 9400, max: 12400 },
+    Ruim: { min: 12400, max: 15400 },
+    "Muito Ruim": { min: 15400, max: null },
   },
   NO: {
-    Good: { min: 0, max: 20 },
-    Fair: { min: 20, max: 40 },
-    Moderate: { min: 40, max: 60 },
-    Poor: { min: 60, max: 80 },
-    "Very Poor": { min: 80, max: null },
+    Bom: { min: 0, max: 20 },
+    Razoável: { min: 20, max: 40 },
+    Moderado: { min: 40, max: 60 },
+    Ruim: { min: 60, max: 80 },
+    "Muito Ruim": { min: 80, max: null },
   },
   NH3: {
-    Good: { min: 0, max: 40 },
-    Fair: { min: 40, max: 70 },
-    Moderate: { min: 70, max: 150 },
-    Poor: { min: 150, max: 200 },
-    "Very Poor": { min: 200, max: null },
+    Bom: { min: 0, max: 40 },
+    Razoável: { min: 40, max: 70 },
+    Moderado: { min: 70, max: 150 },
+    Ruim: { min: 150, max: 200 },
+    "Muito Ruim": { min: 200, max: null },
   },
 }
 
 const pollutantNameMapping: Record<Pollutant, string> = {
-  SO2: "Sulfur dioxide",
-  NO2: "Nitrogen dioxide",
-  PM10: "Particulate matter 10",
-  PM2_5: "Fine particles matter",
-  O3: "Ozone",
-  CO: "Carbon monoxide",
-  NO: "Nitrogen monoxide",
-  NH3: "Ammonia",
+  SO2: "Dióxido de enxofre",
+  NO2: "Dióxido de nitrogênio",
+  PM10: "Material particulado 10",
+  PM2_5: "Partículas finas",
+  O3: "Ozônio",
+  CO: "Monóxido de carbono",
+  NO: "Monóxido de nitrogênio",
+  NH3: "Amônia",
 }

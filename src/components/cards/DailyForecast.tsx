@@ -17,7 +17,7 @@ export default function DailyForecast({ coords }: props) {
     <Card title="Previsão diária" childrenClassName="p-0">
       <div className="p-4">
         {/* Header da Tabela (Discreto e Semântico) */}
-        <div className="grid grid-cols-5 mb-2 px-2 text-xs uppercase tracking-wider font-bold text-slate-400">
+        <div className="grid grid-cols-5 mb-2 px-2 text-xs uppercase tracking-wider font-bold text-muted-foreground">
           <p className="text-left pl-2">Dia</p>
           <p className="text-center">Clima</p>
           <p className="text-center">Méd</p>
@@ -30,14 +30,13 @@ export default function DailyForecast({ coords }: props) {
             <div
               key={index}
               className={`
-              group grid grid-cols-5 items-center py-3 px-2 transition-all duration-0 border-b border-slate-100 last:border-0
+              group grid grid-cols-5 items-center py-3 px-2 transition-all duration-0 border-b border-border last:border-0
               
               /* Estados Padrão */
-              text-slate-600 dark:text-slate-300 dark:border-slate-800
+              text-muted-foreground // Default text color
               
               /* Estados de Hover (Alto Contraste) */
-              hover:bg-slate-200 hover:rounded-lg hover:text-slate-900 
-              dark:hover:bg-slate-800/40 dark:hover:text-slate-100
+              hover:bg-accent hover:rounded-lg hover:text-accent-foreground
             `}
             >
               {/* Dia da Semana */}
@@ -45,14 +44,14 @@ export default function DailyForecast({ coords }: props) {
                 {index === 0
                   ? 'Hoje'
                   : new Date(day.dt * 1000).toLocaleDateString(undefined, {
-                      weekday: 'short',
-                    })}
+                    weekday: 'short',
+                  })}
               </p>
 
               {/* Ícone */}
               <div className="flex justify-center">
                 <img
-                  className="size-10 drop-shadow-sm transition-transform"
+                  className="size-10 drop-shadow-md transition-transform"
                   src={`https://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png`}
                   alt="weather icon"
                 />
@@ -64,12 +63,12 @@ export default function DailyForecast({ coords }: props) {
               </p>
 
               {/* Máxima (Destaque visual sutil) */}
-              <p className="text-center font-bold text-slate-800 dark:text-slate-500">
+              <p className="text-center font-bold text-foreground">
                 {Math.round(day.temp.max)}°
               </p>
 
               {/* Mínima (Visual mais leve) */}
-              <p className="text-center font-medium text-slate-400 dark:text-slate-500">
+              <p className="text-center font-medium text-muted-foreground">
                 {Math.round(day.temp.min)}°
               </p>
             </div>

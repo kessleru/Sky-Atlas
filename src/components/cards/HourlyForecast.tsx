@@ -63,24 +63,21 @@ export default function HourlyForecast({ coords }: props) {
               group shrink-0 flex flex-col items-center justify-between
               min-w-20 p-4 rounded-full border transition-all duration-200
               
-              ${
-                isCurrent
+              ${isCurrent
                   ? 'bg-blue-600 border-blue-600 text-white shadow-lg shadow-blue-500/40 scale-105'
                   : `
-                   bg-slate-50 border-slate-200 text-slate-500
-                   dark:bg-slate-800/50 dark:border-slate-700 dark:text-slate-400
+                   bg-muted/50 border-border text-muted-foreground
                    
                    /* HOVER STATES - Foco em contraste */
-                   hover:bg-slate-200 hover:border-slate-300 hover:text-slate-900
-                   dark:hover:bg-slate-800 dark:hover:border-slate-700 dark:hover:text-slate-100
+                   hover:bg-accent hover:border-border hover:text-accent-foreground
                     hover:shadow-md
                   `
-              }
+                }
             `}
             >
               {/* Hora */}
               <p
-                className={`text-xs font-semibold ${isCurrent ? 'text-blue-100' : 'text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300'}`}
+                className={`text-xs font-semibold ${isCurrent ? 'text-blue-100' : 'text-muted-foreground group-hover:text-foreground'}`}
               >
                 {new Date(hour.dt * 1000).toLocaleTimeString(undefined, {
                   hour: '2-digit',

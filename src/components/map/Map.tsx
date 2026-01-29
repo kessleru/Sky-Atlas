@@ -18,7 +18,7 @@ export default function Map({ coords, onMapClick, mapType }: Props) {
     <MapContainer
       center={[coords.lat, coords.lon]}
       zoom={12}
-      style={{ width: '880px', height: '500px', borderRadius: '12px' }}
+      style={{ width: '100%', height: '500px', borderRadius: '12px', zIndex: 0 }}
     >
       <MapClick onMapClick={onMapClick} coords={coords} />
       <TileLayer

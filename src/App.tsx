@@ -14,6 +14,8 @@ import HourlyForecastSkeleton from './components/skeletons/HourlySkeleton';
 import AdditionalInfoSkeleton from './components/skeletons/AdditionalSkeleton';
 import DailyForecastSkeleton from './components/skeletons/DailySkeleton';
 import SidePanel from './components/side-panel/SidePanel';
+import { ThemeProvider } from './components/theme-provider';
+import { ModeToggle } from './components/mode-toggle';
 
 function App() {
   const [coordinates, setCoords] = useState<Coords>({
@@ -39,28 +41,50 @@ function App() {
       : { lat: geocodeData?.[0].lat ?? 0, lon: geocodeData?.[0].lon ?? 0 };
 
   return (
-    <>
-      <div className="flex flex-col gap-8">
-        <div className="flex gap-8">
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme" attribute="class">
+      {/* Main content area - deixa espaço para o sidebar em lg */}
+      <div className="flex flex-col gap-6 p-4 lg:p-6 lg:mr-(--sidebar-width)">
+        {/* Header com dropdowns */}
+        <div className="flex flex-wrap gap-4 items-end">
           <LocationDropdown location={location} setLocation={setLocation} />
           <MapTypeDropdown mapType={mapType} setMapType={setMapType} />
+          <ModeToggle />
         </div>
+
+        {/* Map - ocupa toda largura */}
         <Map coords={coords} onMapClick={onMapClick} mapType={mapType} />
-        <Suspense fallback={<CurrentSkeleton />}>
-          <CurrentWeather coords={coords} />
-        </Suspense>
-        <Suspense fallback={<HourlyForecastSkeleton />}>
-          <HourlyForecast coords={coords} />
-        </Suspense>
-        <Suspense fallback={<DailyForecastSkeleton />}>
-          <DailyForecast coords={coords} />
-        </Suspense>
-        <Suspense fallback={<AdditionalInfoSkeleton />}>
-          <AdditionalInfo coords={coords} />
-        </Suspense>
+
+        {/* Grid de cards responsivo */}
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-12 gap-6">
+          {/* Current Weather - esquerda */}
+          <div className="md:col-span-1 xl:col-span-3">
+            <Suspense fallback={<CurrentSkeleton />}>
+              <CurrentWeather coords={coords} />
+            </Suspense>
+          </div>
+
+          {/* Centro: Hourly + Additional */}
+          <div className="md:col-span-1 xl:col-span-5 flex flex-col gap-6">
+            <Suspense fallback={<HourlyForecastSkeleton />}>
+              <HourlyForecast coords={coords} />
+            </Suspense>
+            <Suspense fallback={<AdditionalInfoSkeleton />}>
+              <AdditionalInfo coords={coords} />
+            </Suspense>
+          </div>
+
+          {/* Daily Forecast - direita */}
+          <div className="md:col-span-2 xl:col-span-4">
+            <Suspense fallback={<DailyForecastSkeleton />}>
+              <DailyForecast coords={coords} />
+            </Suspense>
+          </div>
+        </div>
       </div>
-      <SidePanel coords={coords}/>
-    </>
+
+      {/* Side Panel */}
+      <SidePanel coords={coords} />
+    </ThemeProvider>
   );
 }
 

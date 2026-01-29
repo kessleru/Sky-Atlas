@@ -45,19 +45,19 @@ export default function AdditionalInfo({ coords }: props) {
     <Card title="Informações Adicionais" childrenClassName="p-4">
       <div className="flex flex-col">
         {rows.map(({ label, value, Icon, shouldRotate }) => {
-          const rotationValue = shouldRotate ? current?.[value] : 0;
+          const rotationValue = shouldRotate ? (current as any)?.[value] : 0;
 
           return (
-            <div 
+            <div
               key={value}
-              className="flex justify-between items-center py-3 border-b border-slate-100 dark:border-slate-800 last:border-0 hover:bg-slate-50/50 dark:hover:bg-slate-800/40 px-2 hover:rounded-lg transition-all duration-0"
+              className="flex justify-between items-center py-3 border-b border-border last:border-0 hover:bg-accent/50 px-2 hover:rounded-lg transition-all duration-0"
             >
-              <span className="text-sm font-medium text-slate-500 dark:text-slate-400">
+              <span className="text-sm font-medium text-muted-foreground">
                 {label}
               </span>
-              <span className="text-sm font-medium flex items-center gap-2 text-slate-700 dark:text-slate-300">
-                <Icon 
-                  className="size-4 transition-transform duration-500" 
+              <span className="text-sm font-medium flex items-center gap-2 text-foreground">
+                <Icon
+                  className="size-4 transition-transform duration-500"
                   style={shouldRotate ? { transform: `rotate(${rotationValue}deg)` } : {}}
                 />
                 <FormatValue value={value} data={data} />
@@ -79,7 +79,7 @@ function FormatValue({ value, data }: { value: string; data: any }) {
     return `${rainAmount} mm`;
   }
 
- 
+
   if (val === undefined || val === null) return '--';
 
   if (value === 'sunrise' || value === 'sunset') {
