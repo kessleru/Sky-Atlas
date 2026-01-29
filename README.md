@@ -148,12 +148,10 @@ VITE_API_KEY=sua_chave_api_aqui
 | `npm run build`   | Gera a build de produção             |
 | `npm run lint`    | Executa a verificação de código      |
 
----
-
 <div align="center">
 
-  Desenvolvido por **Kessleru**
+⭐ **Desenvolvido como projeto de estudos em desenvolvimento web**
 
-  [![GitHub](https://img.shields.io/badge/GitHub-kessleru-181717?style=flat-square&logo=github)](https://github.com/kessleru)
+[![GitHub](https://img.shields.io/badge/GitHub-kessleru-181717?logo=github)](https://github.com/kessleru)
 
 </div>
