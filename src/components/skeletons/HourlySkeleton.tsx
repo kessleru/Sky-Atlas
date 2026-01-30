@@ -2,7 +2,6 @@ import Card from '../cards/Card'
 import { Skeleton } from "@/components/ui/skeleton"
 
 export default function HourlyForecastSkeleton() {
-  // Geramos 12 itens para preencher bem a largura horizontal do card
   const skeletonHours = Array.from({ length: 12 });
 
   return (

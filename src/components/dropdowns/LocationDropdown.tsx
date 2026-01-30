@@ -17,7 +17,9 @@ type Props = {
 export default function LocationDropdown({ location, setLocation }: Props) {
   return (
     <Field className="w-[220px]">
+      {/* Label */}
       <FieldLabel>Localização</FieldLabel>
+      {/* Dropdown */}
       <Select value={location} onValueChange={(value) => setLocation(value)}>
         <SelectTrigger>
           <SelectValue placeholder="Selecione uma cidade" />
@@ -28,6 +30,7 @@ export default function LocationDropdown({ location, setLocation }: Props) {
               -
             </SelectItem>
           )}
+          {/* Lista de Cidades */}
           {locations.map((city) => (
             <SelectItem key={city.value} value={city.value}>
               {city.label}

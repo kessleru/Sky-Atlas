@@ -42,7 +42,7 @@ function App() {
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme" attribute="class">
-      {/* Main content area - deixa espaço para o sidebar em lg */}
+      {/* Main content area */}
       <div className="flex flex-col gap-6 p-4 lg:p-6 lg:mr-(--sidebar-width)">
         {/* Header com dropdowns */}
         <div className="flex flex-wrap gap-4 items-end">

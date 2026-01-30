@@ -44,6 +44,7 @@ export default function AdditionalInfo({ coords }: props) {
   return (
     <Card title="Informações Adicionais" childrenClassName="p-4">
       <div className="flex flex-col">
+        {/* Linhas de Informação */}
         {rows.map(({ label, value, Icon, shouldRotate }) => {
           const rotationValue = shouldRotate ? (current as any)?.[value] : 0;
 
@@ -55,6 +56,7 @@ export default function AdditionalInfo({ coords }: props) {
               <span className="text-sm font-medium text-muted-foreground">
                 {label}
               </span>
+              {/* Valor e Ícone */}
               <span className="text-sm font-medium flex items-center gap-2 text-foreground">
                 <Icon
                   className="size-4 transition-transform duration-500"

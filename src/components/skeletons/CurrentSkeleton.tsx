@@ -17,7 +17,7 @@ export default function CurrentSkeleton() {
         </div>
       </div>
 
-      {/* Horário Local com Badge (Skeleton) */}
+      {/* Horário Local com Badge*/}
       <div className="flex flex-col items-center bg-muted/50 rounded-2xl py-3 px-6 mb-8 border border-border">
         <p className="text-xs uppercase tracking-widest text-muted-foreground font-bold mb-2">
           Horário Local

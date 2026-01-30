@@ -30,7 +30,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     try {
-        // Forward the request to OpenWeatherMap
         const response = await fetch(
             `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=minutely,alerts&units=metric&lang=pt_br&appid=${apiKey}`
         );
@@ -42,8 +41,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
         const data = await response.json();
 
-        // Cache control to save even more requests? 
-        // OpenWeather recommends 10 mins usually.
         res.setHeader('Cache-Control', 's-maxage=600, stale-while-revalidate');
 
         return res.status(200).json(data);
