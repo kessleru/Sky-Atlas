@@ -17,8 +17,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         return res.status(429).json({ error: 'Daily API limit reached' });
     }
 
-    const apiKey = process.env.OPENWEATHER_API_KEY;
+    // Debug logging
+    console.log('API Key Check (Weather):', {
+        OPENWEATHER: process.env.OPENWEATHER_API_KEY ? 'Set' : 'Unset',
+        VITE: process.env.VITE_API_KEY ? 'Set' : 'Unset'
+    });
+
+    const apiKey = process.env.OPENWEATHER_API_KEY || process.env.VITE_API_KEY;
     if (!apiKey) {
+        console.error('Server configuration error: Missing API Key');
         return res.status(500).json({ error: 'Server configuration error' });
     }
 
