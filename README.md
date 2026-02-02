@@ -112,42 +112,6 @@ Garantimos a integridade dos dados recebidos da API utilizando Zod para parsing 
 - `GeocodeSchema`: Valida os dados de geolocalização da busca.
 - `AirPollutionSchema`: Valida os dados de qualidade do ar.
 
-## 🚀 Como Executar
-
-### Pré-requisitos
-
-- Node.js 18+
-- Chave de API da OpenWeatherMap
-
-### Instalação
-
-```bash
-# Clone o repositório
-git clone https://github.com/seu-usuario/sky-atlas.git
-
-# Entre no diretório
-cd sky-atlas
-
-# Instale as dependências
-npm install
-```
-
-### Configuração
-
-Crie um arquivo `.env.local` na raiz do projeto:
-
-```env
-VITE_API_KEY=sua_chave_api_aqui
-```
-
-### Scripts
-
-| Comando           | Descrição                            |
-| ----------------- | ------------------------------------ |
-| `npm run dev`     | Inicia o servidor de desenvolvimento |
-| `npm run build`   | Gera a build de produção             |
-| `npm run lint`    | Executa a verificação de código      |
-
 <div align="center">
 
 ⭐ **Desenvolvido como projeto de estudos em desenvolvimento web**
